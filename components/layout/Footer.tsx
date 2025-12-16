@@ -57,7 +57,7 @@ export function Footer() {
                             href="https://www.instagram.com/platera_recipes/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-stone-600 hover:text-brand-500 opacity-40 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
+                            className="text-stone-600 hover:text-brand-500 opacity-80 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
                             aria-label="Instagram"
                         >
                             <Instagram className="w-4 h-4" strokeWidth={1.5} />
@@ -66,7 +66,7 @@ export function Footer() {
                             href="https://linkedin.com/company/platera"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-stone-600 hover:text-brand-500 opacity-40 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
+                            className="text-stone-600 hover:text-brand-500 opacity-80 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
                             aria-label="LinkedIn"
                         >
                             <Linkedin className="w-4 h-4" strokeWidth={1.5} />
@@ -75,7 +75,7 @@ export function Footer() {
                             href="https://youtube.com/@platera"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-stone-600 hover:text-brand-500 opacity-40 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
+                            className="text-stone-600 hover:text-brand-500 opacity-80 hover:opacity-100 hover:-translate-y-0.5 transition-all duration-200"
                             aria-label="YouTube"
                         >
                             <Youtube className="w-4 h-4" strokeWidth={1.5} />
