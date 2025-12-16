@@ -102,7 +102,7 @@ export default function Home() {
                                 transition={{ duration: 0.6, delay: 1.2 }}
                                 className="flex flex-col sm:flex-row gap-4 items-start"
                             >
-                                <Link href="/recipes">
+                                <Link href="/explore">
                                     <motion.div
                                         whileHover={{ scale: 1.02, y: -4 }}
                                         whileTap={{ scale: 0.98 }}
