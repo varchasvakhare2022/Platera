@@ -36,6 +36,7 @@ model User {
   recipes  Recipe[]
   reviews  Review[]
   comments Comment[]
+  savedRecipes SavedRecipe[]
 
   @@index([clerkId])
   @@index([email])
@@ -60,6 +61,7 @@ model Recipe {
   author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   reviews  Review[]
   comments Comment[]
+  savedBy  SavedRecipe[]
 
   @@index([authorId])
   @@index([category])
@@ -103,4 +105,21 @@ model Comment {
   @@index([userId])
   @@index([createdAt])
   @@map("comments")
+}
+
+model SavedRecipe {
+  id        String   @id @default(cuid())
+  userId    String
+  recipeId  String
+  createdAt DateTime @default(now())
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([userId, recipeId]) // Prevent duplicate saves by same user
+  @@index([userId])
+  @@index([recipeId])
+  @@map("saved_recipes")
 }

@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Star, Clock, Users } from 'lucide-react';
+import { Star, Clock, Users, Heart } from 'lucide-react';
+import { useState } from 'react';
 
 interface Recipe {
     id: string;
@@ -27,6 +28,8 @@ interface Recipe {
 interface RecipeCardProps {
     recipe: Recipe;
     priority?: boolean;
+    isSaved?: boolean;
+    onToggleSave?: (id: string) => void;
 }
 
 const categoryColors = {
@@ -39,7 +42,19 @@ const categoryColors = {
  * Premium Recipe Card
  * Editorial design with sophisticated gradients and interactions
  */
-export function RecipeCard({ recipe, priority = false }: RecipeCardProps) {
+export function RecipeCard({ recipe, priority = false, isSaved = false, onToggleSave }: RecipeCardProps) {
+    const [saving, setSaving] = useState(false);
+
+    const handleSaveClick = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!onToggleSave || saving) return;
+
+        setSaving(true);
+        await onToggleSave(recipe.id);
+        setSaving(false);
+    };
+
     return (
         <Link href={`/recipes/${recipe.id}`}>
             <motion.article
@@ -88,6 +103,26 @@ export function RecipeCard({ recipe, priority = false }: RecipeCardProps) {
                             {recipe.category === 'NON_VEG' ? 'Non-Veg' : recipe.category === 'VEG' ? 'Vegetarian' : 'Egg'}
                         </motion.div>
                     </div>
+
+                    {/* Save Button - Top Right (Below Category) */}
+                    {onToggleSave && (
+                        <div className="absolute top-14 right-4 z-10">
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={handleSaveClick}
+                                className={`p-2 rounded-full backdrop-blur-md transition-all duration-300 ${isSaved
+                                        ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/30'
+                                        : 'bg-neutral-950/40 text-neutral-300 border border-neutral-700/50 hover:bg-neutral-900/60 hover:text-rose-400'
+                                    }`}
+                            >
+                                <Heart
+                                    className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`}
+                                    strokeWidth={isSaved ? 0 : 2}
+                                />
+                            </motion.button>
+                        </div>
+                    )}
 
                     {/* Rating Badge - Top Left */}
                     {recipe.avgRating > 0 && (
