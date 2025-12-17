@@ -56,7 +56,7 @@ export function RecipeCard({ recipe, priority = false, isSaved = false, onToggle
     };
 
     return (
-        <Link href={`/recipes/${recipe.id}`}>
+        <Link href={`/explore/${recipe.id}`}>
             <motion.article
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -112,8 +112,8 @@ export function RecipeCard({ recipe, priority = false, isSaved = false, onToggle
                                 whileTap={{ scale: 0.9 }}
                                 onClick={handleSaveClick}
                                 className={`p-2 rounded-full backdrop-blur-md transition-all duration-300 ${isSaved
-                                        ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/30'
-                                        : 'bg-neutral-950/40 text-neutral-300 border border-neutral-700/50 hover:bg-neutral-900/60 hover:text-rose-400'
+                                    ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/30'
+                                    : 'bg-neutral-950/40 text-neutral-300 border border-neutral-700/50 hover:bg-neutral-900/60 hover:text-rose-400'
                                     }`}
                             >
                                 <Heart
