@@ -44,8 +44,10 @@ export async function GET(request: NextRequest) {
             orderBy: { createdAt: 'desc' }
         });
 
-        // 3. Fetch Saved Recipes
-        const savedRecipes = await prisma.savedRecipe.findMany({
+        // 3. Fetch Saved Recipes - DISABLED due to missing DB table
+        const savedRecipes: any[] = [];
+        /* 
+        await prisma.savedRecipe.findMany({
             where: { userId: user.id },
             include: {
                 recipe: {
@@ -61,6 +63,7 @@ export async function GET(request: NextRequest) {
             },
             orderBy: { createdAt: 'desc' }
         });
+        */
 
         // 4. Fetch User's Reviews
         const reviews = await prisma.review.findMany({
@@ -77,7 +80,7 @@ export async function GET(request: NextRequest) {
         const stats = {
             totalRecipes: recipes.length,
             totalReviews: reviews.length,
-            totalSaved: savedRecipes.length,
+            totalSaved: 0, // savedRecipes.length,
             // Calculate total reviews received on user's recipes
             totalReviewsReceived: recipes.reduce((acc, recipe) => acc + recipe._count.reviews, 0)
         };
