@@ -22,7 +22,6 @@ export async function POST() {
             {
                 timestamp,
                 folder,
-                upload_preset: 'platera_recipes',
             },
             process.env.CLOUDINARY_API_SECRET!
         );

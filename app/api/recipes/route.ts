@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { RecipeCategory } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 /**
  * GET /api/recipes
@@ -149,7 +150,7 @@ export async function POST(request: NextRequest) {
         const recipe = await prisma.recipe.create({
             data: {
                 title,
-                description,
+                description: description || '',
                 category,
                 servings,
                 totalTime,
@@ -168,6 +169,9 @@ export async function POST(request: NextRequest) {
                 },
             },
         });
+
+        // Revalidate dashboard to show new recipe
+        revalidatePath('/dashboard');
 
         return NextResponse.json(recipe, { status: 201 });
     } catch (error) {

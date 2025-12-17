@@ -8,7 +8,8 @@ const footerLinks = [
     { href: '/explore', label: 'Explore' },
     { href: '/about', label: 'About' },
     { href: '/create', label: 'Add a Recipe' },
-    { href: '/privacy', label: 'Privacy' },
+    { href: '/privacy-policy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms' },
 ];
 
 export function Footer() {
