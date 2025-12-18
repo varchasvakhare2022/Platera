@@ -7,11 +7,10 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-
 import { useState, useEffect } from 'react';
 import { useUser, UserButton } from '@clerk/nextjs';
 import { ChevronLeft, Filter as FilterIcon, ListFilter, X, Star } from 'lucide-react';
+import { dark } from '@clerk/themes';
 
 const navLinks = [
     { href: '/explore', label: 'Explore' },
-    { href: '/about', label: 'About' },
-    { href: '/dashboard', label: 'Me' },
 ];
 
 export function Header() {
@@ -76,6 +75,12 @@ export function Header() {
         }, 500);
         return () => clearInterval(interval);
     }, [hideNav, lastScrollTime, isAtTop]);
+
+    // Filter nav links (Hide Explore on Home)
+    const filteredNavLinks = navLinks.filter(link => {
+        if (pathname === '/' && link.href === '/explore') return false;
+        return true;
+    });
 
     return (
         <motion.header
@@ -219,78 +224,80 @@ export function Header() {
                     </div>
 
                     {/* Center Navigation with Dark Background */}
-                    <motion.div
-                        className="relative px-6 py-2.5 rounded-full"
-                        animate={{
-                            backgroundColor: (hideNav || isAtTop) ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.75)',
-                            backdropFilter: (hideNav || isAtTop) ? 'blur(0px)' : 'blur(12px)',
-                        }}
-                        transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.1, 0.25, 1.0]
-                        }}
-                    >
-                        <div className="flex items-center gap-8">
-                            {navLinks.map((link, index) => {
-                                const isActive = pathname === link.href;
+                    {filteredNavLinks.length > 0 && (
+                        <motion.div
+                            className="absolute left-1/2 -translate-x-1/2 px-6 py-2.5 rounded-full"
+                            animate={{
+                                backgroundColor: (hideNav || isAtTop) ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 0.75)',
+                                backdropFilter: (hideNav || isAtTop) ? 'blur(0px)' : 'blur(12px)',
+                            }}
+                            transition={{
+                                duration: 0.3,
+                                ease: [0.25, 0.1, 0.25, 1.0]
+                            }}
+                        >
+                            <div className="flex items-center gap-8">
+                                {filteredNavLinks.map((link, index) => {
+                                    const isActive = pathname === link.href;
 
-                                return (
-                                    <motion.div
-                                        key={link.href}
-                                        animate={{
-                                            opacity: hideNav ? 0 : 1,
-                                            y: hideNav ? -8 : 0,
-                                            filter: hideNav ? 'blur(4px)' : 'blur(0px)',
-                                        }}
-                                        transition={{
-                                            duration: 0.25,
-                                            delay: hideNav ? index * 0.02 : (2 - index) * 0.04,
-                                            ease: [0.25, 0.1, 0.25, 1.0],
-                                            filter: { duration: 0.2 }
-                                        }}
-                                        style={{
-                                            willChange: 'opacity, transform, filter'
-                                        }}
-                                    >
-                                        <Link
-                                            href={link.href}
-                                            className="relative group hidden md:block"
+                                    return (
+                                        <motion.div
+                                            key={link.href}
+                                            animate={{
+                                                opacity: hideNav ? 0 : 1,
+                                                y: hideNav ? -8 : 0,
+                                                filter: hideNav ? 'blur(4px)' : 'blur(0px)',
+                                            }}
+                                            transition={{
+                                                duration: 0.25,
+                                                delay: hideNav ? index * 0.02 : (2 - index) * 0.04,
+                                                ease: [0.25, 0.1, 0.25, 1.0],
+                                                filter: { duration: 0.2 }
+                                            }}
+                                            style={{
+                                                willChange: 'opacity, transform, filter'
+                                            }}
                                         >
-                                            <motion.span
-                                                className={`text-sm font-medium transition-colors duration-200 ${isActive
-                                                    ? 'text-white'
-                                                    : 'text-stone-400 hover:text-white'
-                                                    }`}
-                                                animate={{
-                                                    letterSpacing: hideNav ? '0.1em' : '0em',
-                                                }}
-                                                transition={{
-                                                    duration: 0.25,
-                                                    ease: [0.25, 0.1, 0.25, 1.0]
-                                                }}
+                                            <Link
+                                                href={link.href}
+                                                className="relative group hidden md:block"
                                             >
-                                                {link.label}
-                                            </motion.span>
-                                            {isActive && (
-                                                <motion.div
-                                                    layoutId="active-nav"
-                                                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-brand-500"
+                                                <motion.span
+                                                    className={`text-sm font-medium transition-colors duration-200 ${isActive
+                                                        ? 'text-white'
+                                                        : 'text-stone-400 hover:text-white'
+                                                        }`}
                                                     animate={{
-                                                        opacity: hideNav ? 0 : 1,
-                                                        scaleX: hideNav ? 0.5 : 1,
+                                                        letterSpacing: hideNav ? '0.1em' : '0em',
                                                     }}
                                                     transition={{
-                                                        duration: 0.2,
+                                                        duration: 0.25,
                                                         ease: [0.25, 0.1, 0.25, 1.0]
                                                     }}
-                                                />
-                                            )}
-                                        </Link>
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
-                    </motion.div>
+                                                >
+                                                    {link.label}
+                                                </motion.span>
+                                                {isActive && (
+                                                    <motion.div
+                                                        layoutId="active-nav"
+                                                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-brand-500"
+                                                        animate={{
+                                                            opacity: hideNav ? 0 : 1,
+                                                            scaleX: hideNav ? 0.5 : 1,
+                                                        }}
+                                                        transition={{
+                                                            duration: 0.2,
+                                                            ease: [0.25, 0.1, 0.25, 1.0]
+                                                        }}
+                                                    />
+                                                )}
+                                            </Link>
+                                        </motion.div>
+                                    );
+                                })}
+                            </div>
+                        </motion.div>
+                    )}
 
                     {/* Auth + Sort (Right Side) */}
                     <div className="flex items-center gap-4">
@@ -298,15 +305,49 @@ export function Header() {
                             <UserButton
                                 afterSignOutUrl="/"
                                 appearance={{
+                                    baseTheme: dark,
+                                    variables: {
+                                        colorBackground: "#0c0a09", // stone-950
+                                        colorInputBackground: "#1c1917", // stone-900
+                                        colorText: "#fafaf9", // stone-50
+                                        colorInputText: "#fafaf9",
+                                        colorPrimary: "#f59e0b", // amber-500
+                                        colorTextSecondary: "#a8a29e", // stone-400
+                                    },
                                     elements: {
-                                        avatarBox: "w-8 h-8",
-                                        userButtonPopoverCard: "bg-stone-950 border border-stone-800",
-                                        userButtonPopoverActionButton: "hover:bg-stone-900 text-stone-300",
-                                        userButtonPopoverActionButtonIcon: "text-stone-400",
-                                        userButtonPopoverFooter: "hidden"
+                                        // Dropdown styling
+                                        avatarBox: "w-9 h-9 ring-2 ring-stone-800 transition-shadow hover:ring-amber-500/50",
+                                        userButtonPopoverCard: "!bg-stone-950 !border !border-stone-800 !shadow-2xl !shadow-black/50 !rounded-2xl",
+                                        userButtonPopoverActionButton: "group hover:!bg-stone-900 !text-stone-300 hover:!text-amber-500 transition-colors p-3 rounded-xl flex items-center gap-3",
+                                        userButtonPopoverActionButtonIcon: "!text-stone-500 group-hover:!text-amber-500 !w-4 !h-4 !mx-0",
+                                        userButtonPopoverActionButtonText: "!font-sans !font-medium",
+                                        userButtonPopoverFooter: "!hidden",
+
+                                        // Manage Account Modal Styling - Critical Overrides
+                                        card: "!bg-stone-950 !border !border-stone-800",
+                                        navbar: "!bg-stone-950 !border-r !border-stone-800",
+                                        navbarButton: "!text-stone-400 hover:!bg-stone-900 hover:!text-amber-500",
+                                        activeNavbarButton: "!bg-stone-900 !text-amber-500",
+                                        headerTitle: "!text-white !font-display",
+                                        headerSubtitle: "!text-stone-400",
+                                        sectionHeaderTitle: "!text-white !font-display",
+                                        formFieldLabel: "!text-stone-400",
+                                        formFieldInput: "!bg-stone-900 !border-stone-800 !text-white",
+                                        footerActionText: "!text-stone-400",
+                                        footerActionLink: "!text-amber-500 hover:!text-amber-400",
+                                        identityPreviewText: "!text-stone-300",
+                                        identityPreviewEditButton: "!text-amber-500",
                                     }
                                 }}
-                            />
+                            >
+                                <UserButton.MenuItems>
+                                    <UserButton.Action
+                                        label="Dashboard"
+                                        labelIcon={<ListFilter className="w-4 h-4 text-stone-500 group-hover:text-amber-500" />}
+                                        onClick={() => router.push('/dashboard')}
+                                    />
+                                </UserButton.MenuItems>
+                            </UserButton>
                         ) : (
                             <Link href="/sign-in">
                                 <button className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium rounded-md transition-colors duration-200">
