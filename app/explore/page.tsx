@@ -127,7 +127,7 @@ function ExploreContent() {
                             transition={{ delay: 0.1 }}
                             className="text-5xl md:text-7xl font-display font-medium text-white tracking-tight"
                         >
-                            Culinary <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-sepia-100 to-amber-200">Excellence</span>
+                            Culinary <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-amber-300 to-amber-500">Excellence</span>
                         </motion.h1>
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}

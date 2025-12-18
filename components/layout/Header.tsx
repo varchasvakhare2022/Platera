@@ -113,6 +113,14 @@ function HeaderContent() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="fixed top-0 left-0 right-0 z-50 bg-transparent"
         >
+            {/* Gradient Masked Blur Background */}
+            <div
+                className="absolute top-0 left-0 right-0 h-48 z-[-1] bg-stone-950/40 backdrop-blur-xl transition-all duration-300 pointer-events-none"
+                style={{
+                    maskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)'
+                }}
+            />
             <div className="container mx-auto max-w-7xl px-6">
                 <nav className="flex items-center justify-between h-16 relative">
                     {/* Left Section: Filter + Logo */}
