@@ -78,6 +78,14 @@ function HeaderContent() {
       transition={{ duration: 0.5, delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50 bg-transparent"
     >
+      {/* Gradient Masked Blur Background */}
+      <div
+        className="absolute top-0 left-0 right-0 h-48 z-[-1] backdrop-blur-xl transition-all duration-300 pointer-events-none"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)'
+        }}
+      />
       <div className="container mx-auto max-w-7xl px-6">
         <nav className="flex items-center justify-between h-16 relative">
           {/* Left Section: Filter + Logo */}
@@ -158,11 +166,10 @@ function HeaderContent() {
                         className="relative group hidden md:block"
                       >
                         <motion.span
-                          className={`text-sm font-medium transition-colors duration-200 ${
-                            isActive
-                              ? "text-white"
-                              : "text-stone-400 hover:text-white"
-                          }`}
+                          className={`text-sm font-medium transition-colors duration-200 ${isActive
+                            ? "text-white"
+                            : "text-stone-400 hover:text-white"
+                            }`}
                           animate={{
                             letterSpacing: hideNav ? "0.1em" : "0em",
                           }}
@@ -213,7 +220,7 @@ function HeaderContent() {
                   elements: {
                     // Dropdown styling
                     avatarBox:
-                      "w-9 h-9 ring-2 ring-stone-800 transition-shadow hover:ring-amber-500/50",
+                      "w-9 h-9 ring-2 ring-stone-800 transition-shadow hover:ring-amber-500",
                     userButtonPopoverCard:
                       "!bg-stone-950 !border !border-stone-800 !shadow-2xl !shadow-black/50 !rounded-2xl",
                     userButtonPopoverActionButton:

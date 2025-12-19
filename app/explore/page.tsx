@@ -165,7 +165,7 @@ function ExploreContent() {
               className="text-5xl md:text-7xl font-display font-medium text-white tracking-tight"
             >
               Culinary{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-sepia-100 to-amber-200">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500">
                 Excellence
               </span>
             </motion.h1>
@@ -182,12 +182,11 @@ function ExploreContent() {
         </div>
       </section>
 
-      {/* Header Background Blocker - Prevents content from showing behind header */}
-      <div className="fixed top-0 left-0 right-0 h-16 bg-stone-950/80 backdrop-blur-xl z-30 border-b border-stone-800/50" />
+
 
       {/* Search & Filter Section */}
-      <section className="sticky top-16 z-40 bg-stone-950/80 backdrop-blur-xl border-b border-stone-800/50">
-        <div className="absolute -bottom-8 left-0 right-0 h-8 bg-gradient-to-b from-stone-950/80 to-transparent pointer-events-none" />
+      <section className="sticky top-16 z-[60] transition-all duration-300">
+
         <div className="container mx-auto px-4 py-6 max-w-7xl">
           <div className="flex items-center justify-between gap-3">
             {/* Search (left) */}
@@ -213,11 +212,10 @@ function ExploreContent() {
               <div className="relative" ref={filterRef}>
                 <button
                   onClick={() => setShowFilterPanel(!showFilterPanel)}
-                  className={`flex items-center justify-center w-10 h-10 rounded-full transition-all border ${
-                    showFilterPanel
-                      ? "bg-amber-600 text-white border-amber-500"
-                      : "bg-stone-900/60 text-stone-400 border-stone-800 hover:text-white hover:bg-stone-800"
-                  }`}
+                  className={`flex items-center justify-center w-10 h-10 rounded-full transition-all border ${showFilterPanel
+                    ? "bg-amber-600 text-white border-amber-500"
+                    : "bg-stone-900/60 text-stone-400 border-stone-800 hover:text-white hover:bg-stone-800"
+                    }`}
                   title="Filter Recipes"
                 >
                   {showFilterPanel ? (
@@ -279,11 +277,10 @@ function ExploreContent() {
                                       `/explore?${params.toString()}`
                                     );
                                   }}
-                                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all text-left ${
-                                    isActive
-                                      ? "bg-amber-900/30 text-amber-500 border border-amber-800/50"
-                                      : "bg-stone-900/50 text-stone-400 border border-stone-800 hover:bg-stone-900 hover:text-stone-200"
-                                  }`}
+                                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all text-left ${isActive
+                                    ? "bg-amber-900/30 text-amber-500 border border-amber-800/50"
+                                    : "bg-stone-900/50 text-stone-400 border border-stone-800 hover:bg-stone-900 hover:text-stone-200"
+                                    }`}
                                 >
                                   {cat.label}
                                 </button>
@@ -314,11 +311,10 @@ function ExploreContent() {
                                       `/explore?${params.toString()}`
                                     );
                                   }}
-                                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                                    isActive
-                                      ? "bg-stone-100 text-stone-900"
-                                      : "bg-stone-900/50 text-stone-400 border border-stone-800 hover:bg-stone-900"
-                                  }`}
+                                  className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive
+                                    ? "bg-stone-100 text-stone-900"
+                                    : "bg-stone-900/50 text-stone-400 border border-stone-800 hover:bg-stone-900"
+                                    }`}
                                 >
                                   &lt; {time} min
                                 </button>
@@ -339,18 +335,16 @@ function ExploreContent() {
                               else params.set("minRating", "4");
                               router.replace(`/explore?${params.toString()}`);
                             }}
-                            className={`w-full px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all ${
-                              searchParams.get("minRating")
-                                ? "bg-amber-600 text-white shadow-lg shadow-amber-900/40"
-                                : "bg-stone-900 text-stone-400 border border-stone-800 hover:bg-stone-800"
-                            }`}
+                            className={`w-full px-4 py-3 rounded-xl flex items-center justify-center gap-2 transition-all ${searchParams.get("minRating")
+                              ? "bg-amber-600 text-white shadow-lg shadow-amber-900/40"
+                              : "bg-stone-900 text-stone-400 border border-stone-800 hover:bg-stone-800"
+                              }`}
                           >
                             <Star
-                              className={`w-4 h-4 ${
-                                searchParams.get("minRating")
-                                  ? "fill-white"
-                                  : ""
-                              }`}
+                              className={`w-4 h-4 ${searchParams.get("minRating")
+                                ? "fill-white"
+                                : ""
+                                }`}
                             />
                             <span className="font-medium">4+ Stars Only</span>
                           </button>
@@ -365,11 +359,10 @@ function ExploreContent() {
               <div className="relative" ref={sortRef}>
                 <button
                   onClick={() => setShowSortPanel((v) => !v)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all border ${
-                    showSortPanel
-                      ? "bg-stone-100 text-stone-900 border-white"
-                      : "bg-stone-900/60 text-stone-400 border-stone-800 hover:text-white hover:bg-stone-800"
-                  }`}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all border ${showSortPanel
+                    ? "bg-stone-100 text-stone-900 border-white"
+                    : "bg-stone-900/60 text-stone-400 border-stone-800 hover:text-white hover:bg-stone-800"
+                    }`}
                   aria-haspopup="menu"
                   aria-expanded={showSortPanel}
                 >
@@ -407,12 +400,11 @@ function ExploreContent() {
                               router.replace(`/explore?${params.toString()}`);
                               setShowSortPanel(false);
                             }}
-                            className={`px-4 py-2.5 text-sm text-left hover:bg-stone-900 transition-colors ${
-                              (searchParams.get("sortBy") || "newest") ===
+                            className={`px-4 py-2.5 text-sm text-left hover:bg-stone-900 transition-colors ${(searchParams.get("sortBy") || "newest") ===
                               option.value
-                                ? "text-amber-500 font-medium"
-                                : "text-stone-300"
-                            }`}
+                              ? "text-amber-500 font-medium"
+                              : "text-stone-300"
+                              }`}
                             role="menuitem"
                           >
                             {option.label}
