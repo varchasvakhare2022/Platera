@@ -10,6 +10,141 @@
     color: white;
 }
 
+/* Hide Clerk Branding */
+div[class*="cl-footer"],
+div[class*="cl-branding"],
+div[aria-label*="Secured by"],
+a[href*="clerk.com"],
+a[href*="clerk.dev"] {
+    display: none !important;
+}
+
+/* Targeted hiding via custom class in layout.tsx - Overlay Hack RESTORED for Custom Branding */
+.remove-branding {
+    position: relative !important;
+}
+
+/* Custom "Platera" Branding Footer Overlay */
+.remove-branding::after {
+    content: "Platera";
+    /* Custom Brand Name */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 48px;
+    /* Standard footer height */
+    background-color: #0c0a09;
+    /* Matches sidebar exactly (stone-950) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f59e0b;
+    /* amber-500 - orange theme color */
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    z-index: 50;
+    /* Ensure it covers the original text */
+    pointer-events: none;
+}
+
+/* UserButton Popover - Consistent Styling for All Components */
+.cl-userButtonPopoverMain {
+    padding: 0.5rem !important;
+}
+
+/* User Profile Section - Match menu item styling */
+.cl-userPreview {
+    padding: 1rem !important;
+    border-radius: 0.75rem !important;
+    transition: background-color 0.2s !important;
+    cursor: pointer !important;
+}
+
+.cl-userPreview:hover {
+    background-color: #1c1917 !important;
+    /* stone-900 */
+}
+
+/* All Menu Items - Consistent Alignment */
+.cl-userButtonPopoverActionButton,
+.cl-userButtonPopoverCustomItemButton,
+button[class*="cl-userButtonPopoverActionButton"],
+button[class*="cl-userButtonPopoverCustomItemButton"] {
+    width: 100% !important;
+    padding: 1rem !important;
+    border-radius: 0.75rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    transition: all 0.2s !important;
+    color: #d6d3d1 !important;
+    /* stone-300 */
+}
+
+.cl-userButtonPopoverActionButton:hover,
+.cl-userButtonPopoverCustomItemButton:hover {
+    background-color: #1c1917 !important;
+    /* stone-900 */
+    color: #f59e0b !important;
+    /* amber-500 */
+}
+
+/* Icons - Consistent Sizing */
+.cl-userButtonPopoverActionButtonIcon,
+.cl-userButtonPopoverCustomItemButtonIcon,
+[class*="cl-userButtonPopoverActionButtonIcon"],
+[class*="cl-userButtonPopoverCustomItemButtonIcon"] {
+    width: 1rem !important;
+    height: 1rem !important;
+    min-width: 1rem !important;
+    min-height: 1rem !important;
+    flex-shrink: 0 !important;
+    color: #78716c !important;
+    /* stone-500 */
+}
+
+.cl-userButtonPopoverActionButton:hover .cl-userButtonPopoverActionButtonIcon,
+.cl-userButtonPopoverCustomItemButton:hover .cl-userButtonPopoverCustomItemButtonIcon,
+.cl-userButtonPopoverCustomItemButton:hover svg {
+    color: #f59e0b !important;
+    /* amber-500 */
+}
+
+/* Sign Out Button - Red Text/Icon on Hover */
+.cl-userButtonPopoverActionButton__signOut:hover,
+button[class*="signOut"]:hover {
+    color: #ef4444 !important;
+    /* red-500 */
+}
+
+.cl-userButtonPopoverActionButton__signOut:hover .cl-userButtonPopoverActionButtonIcon,
+button[class*="signOut"]:hover svg {
+    color: #ef4444 !important;
+    /* red-500 */
+    stroke: #ef4444 !important;
+    fill: #ef4444 !important;
+}
+
+
+
+:root {
+    /* ... rest of file ... */
+}
+
+/* ... skip to bottom ... */
+
+/* Ensure navbar stretches to full height */
+.cl-navbar {
+    flex-grow: 0 !important;
+    min-height: 100% !important;
+    /* Stretch to fill container */
+    background-color: #0c0a09 !important;
+    /* Ensure consistent background matches stone-950 */
+}
+
 :root {
     /* Luxury Theme Colors */
     --color-sepia: #a68968;
@@ -194,4 +329,36 @@ input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px #111 inset !important;
     -webkit-text-fill-color: white !important;
     transition: background-color 5000s ease-in-out 0s;
+}
+
+/* NUCLEAR OPTION: Force Clerk Modal Height to be compact */
+.cl-userProfile-root .cl-card,
+.cl-userButton-popover .cl-card,
+.cl-modalContent>.cl-card,
+div[class*="cl-card"] {
+    height: auto !important;
+    /* Allow shrinking */
+    max-height: 600px !important;
+    /* Cap height */
+    min-height: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+}
+
+/* Ensure navbar doesnt force height */
+.cl-navbar {
+    flex-grow: 0 !important;
+    height: auto !important;
+    max-height: 600px !important;
+}
+
+/* Ensure scrollbox fits */
+.cl-scrollBox,
+.cl-pageScrollBox {
+    max-height: 600px !important;
+}
+
+/* Specific fix for the modal container itself if standard modal */
+.cl-modalContent {
+    max-height: 600px !important;
 }

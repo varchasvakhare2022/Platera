@@ -208,45 +208,9 @@ function HeaderContent() {
               <UserButton
                 afterSignOutUrl="/"
                 appearance={{
-                  baseTheme: dark,
-                  variables: {
-                    colorBackground: "#0c0a09", // stone-950
-                    colorInputBackground: "#1c1917", // stone-900
-                    colorText: "#fafaf9", // stone-50
-                    colorInputText: "#fafaf9",
-                    colorPrimary: "#f59e0b", // amber-500
-                    colorTextSecondary: "#a8a29e", // stone-400
-                  },
                   elements: {
-                    // Dropdown styling
                     avatarBox:
                       "w-9 h-9 ring-2 ring-stone-800 transition-shadow hover:ring-amber-500",
-                    userButtonPopoverCard:
-                      "!bg-stone-950 !border !border-stone-800 !shadow-2xl !shadow-black/50 !rounded-2xl",
-                    userButtonPopoverActionButton:
-                      "group hover:!bg-stone-900 !text-stone-300 hover:!text-amber-500 transition-colors p-3 rounded-xl flex items-center gap-3",
-                    userButtonPopoverActionButtonIcon:
-                      "!text-stone-500 group-hover:!text-amber-500 !w-4 !h-4 !mx-0",
-                    userButtonPopoverActionButtonText:
-                      "!font-sans !font-medium",
-                    userButtonPopoverFooter: "!hidden",
-
-                    // Manage Account Modal Styling - Critical Overrides
-                    card: "!bg-stone-950 !border !border-stone-800",
-                    navbar: "!bg-stone-950 !border-r !border-stone-800",
-                    navbarButton:
-                      "!text-stone-400 hover:!bg-stone-900 hover:!text-amber-500",
-                    activeNavbarButton: "!bg-stone-900 !text-amber-500",
-                    headerTitle: "!text-white !font-display",
-                    headerSubtitle: "!text-stone-400",
-                    sectionHeaderTitle: "!text-white !font-display",
-                    formFieldLabel: "!text-stone-400",
-                    formFieldInput:
-                      "!bg-stone-900 !border-stone-800 !text-white",
-                    footerActionText: "!text-stone-400",
-                    footerActionLink: "!text-amber-500 hover:!text-amber-400",
-                    identityPreviewText: "!text-stone-300",
-                    identityPreviewEditButton: "!text-amber-500",
                   },
                 }}
               >
@@ -258,6 +222,8 @@ function HeaderContent() {
                     }
                     onClick={() => router.push("/dashboard")}
                   />
+                  <UserButton.Action label="manageAccount" />
+                  <UserButton.Action label="signOut" />
                 </UserButton.MenuItems>
               </UserButton>
             ) : (

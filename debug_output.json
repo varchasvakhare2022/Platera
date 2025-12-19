@@ -7,14 +7,9 @@
   "duplicates": [
     {
       "id": "cmj9zvnlm0000x8x5apkkyf9u",
-      "recipes": 2,
+      "recipes": 1,
       "clerkId": "user_36qewqoHXLK7IHJyZvLLd0jpJtY"
     }
   ],
-  "testRecipe": {
-    "id": "cmja074tm0001x8x5a4c0gikb",
-    "authorId": "cmj9zvnlm0000x8x5apkkyf9u",
-    "authorEmail": "vk.varchasva@gmail.com",
-    "isMatch": true
-  }
+  "testRecipe": "NOT FOUND"
 }

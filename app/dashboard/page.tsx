@@ -211,18 +211,9 @@ export default function DashboardPage() {
 
                                                     {/* Actions Overlay */}
                                                     <div className="absolute top-2 right-2 flex gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <Link href={`/recipes/${recipe.id}/edit`} className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-white hover:text-black transition-colors">
+                                                        <Link href={`/explore/${recipe.id}/edit`} className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-white hover:text-black transition-colors">
                                                             <Edit className="w-3.5 h-3.5" />
                                                         </Link>
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleDeleteRecipe(recipe.id);
-                                                            }}
-                                                            className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-rose-500 transition-colors"
-                                                        >
-                                                            <Trash2 className="w-3.5 h-3.5" />
-                                                        </button>
                                                     </div>
                                                 </div>
 
@@ -261,7 +252,7 @@ export default function DashboardPage() {
                                 {data?.savedRecipes && data.savedRecipes.length > 0 ? (
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {data.savedRecipes.map((recipe) => (
-                                            <Link href={`/recipes/${recipe.id}`} key={recipe.id} className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors block">
+                                            <Link href={`/explore/${recipe.id}`} key={recipe.id} className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors block">
                                                 <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden">
                                                     <img
                                                         src={recipe.images[0]}
@@ -301,7 +292,7 @@ export default function DashboardPage() {
                                         {data.reviews.map((review) => (
                                             <div key={review.id} className="bg-stone-900/30 border border-stone-800 p-6 rounded-xl">
                                                 <div className="flex items-center justify-between mb-4">
-                                                    <Link href={`/recipes/${review.recipe.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                                                    <Link href={`/explore/${review.recipe.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                                                         <img src={review.recipe.images[0]} alt="" className="w-10 h-10 rounded-md object-cover bg-stone-800" />
                                                         <div>
                                                             <p className="text-white text-sm font-medium">{review.recipe.title}</p>

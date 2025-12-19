@@ -131,7 +131,7 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                         {/* Author & Meta */}
                         <div className="flex items-center gap-6 pt-4">
                             <div className="flex items-center gap-3">
-                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500/20">
+                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-orange-500">
                                     {recipe.author.profileImage ? (
                                         <Image src={recipe.author.profileImage} alt={recipe.author.name} fill className="object-cover" />
                                     ) : (
