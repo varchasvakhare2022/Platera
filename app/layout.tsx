@@ -31,32 +31,40 @@ export default function RootLayout({
             appearance={{
                 baseTheme: dark,
                 variables: {
-                    colorBackground: "#0c0a09", // stone-950
-                    colorInputBackground: "#1c1917", // stone-900
+                    colorBackground: "#050505", // Match app background
+                    colorInputBackground: "#111", // Match app inputs
                     colorText: "#fafaf9", // stone-50
                     colorInputText: "#fafaf9",
-                    colorPrimary: "#f59e0b", // amber-500
+                    colorPrimary: "#FF6A00", // Orange brand color
                     colorTextSecondary: "#a8a29e", // stone-400
+                    colorDanger: "#ef4444", // red-500
+                    borderRadius: "0.75rem", // rounded-xl
                 },
                 layout: {
                     unsafe_disableDevelopmentModeWarnings: true,
                 },
                 elements: {
-                    card: "!bg-stone-950 !border !border-stone-800",
+                    card: "!bg-[#0A0A0A] !border !border-stone-800/60 !rounded-2xl !shadow-2xl",
                     navbar: "!bg-stone-950 !border-r !border-stone-800 remove-branding",
                     navbarButton:
-                        "!text-stone-400 hover:!bg-stone-900 hover:!text-amber-500",
-                    activeNavbarButton: "!bg-stone-900 !text-amber-500",
-                    headerTitle: "!text-white !font-display",
-                    headerSubtitle: "!text-stone-400",
+                        "!text-stone-400 hover:!bg-stone-900 hover:!text-[#FF6A00]",
+                    activeNavbarButton: "!bg-stone-900 !text-[#FF6A00]",
+                    headerTitle: "!text-white !font-display !text-2xl !font-bold",
+                    headerSubtitle: "!text-stone-400 !text-xs",
                     sectionHeaderTitle: "!text-white !font-display",
-                    formFieldLabel: "!text-stone-400",
+                    formFieldLabel: "!text-stone-500 !text-[10px] !font-bold !uppercase !tracking-widest",
                     formFieldInput:
-                        "!bg-stone-900 !border-stone-800 !text-white",
-                    footerActionText: "!text-stone-400",
-                    footerActionLink: "!text-amber-500 hover:!text-amber-400",
-                    identityPreviewText: "!text-stone-300",
-                    identityPreviewEditButton: "!text-amber-500",
+                        "!bg-[#111] !border !border-stone-800 !rounded-lg !text-white placeholder:!text-stone-700 focus:!border-[#FF6A00]/40 focus:!bg-[#161616] !transition-all",
+                    formButtonPrimary:
+                        "!bg-[#FF6A00] hover:!bg-[#FF8533] !text-black !font-bold !rounded-xl !shadow-[0_0_15px_rgba(255,106,0,0.15)] hover:!shadow-[0_0_25px_rgba(255,106,0,0.3)] !transition-all !duration-300",
+                    footerActionText: "!text-stone-400 !text-xs",
+                    footerActionLink: "!text-white hover:!text-[#FF6A00] !font-medium !transition-colors",
+                    identityPreviewText: "!text-white",
+                    identityPreviewEditButton: "!text-[#FF6A00] hover:!text-[#FF8533]",
+                    dividerLine: "!bg-stone-800",
+                    dividerText: "!text-stone-600 !text-[10px] !uppercase !tracking-widest",
+                    socialButtonsBlockButton:
+                        "!bg-[#111] hover:!bg-[#1A1A1A] !border !border-stone-800 !rounded-lg !text-white hover:!border-stone-700 !transition-all",
 
                     // User Button Popover
                     userButtonPopoverCard: "!bg-stone-950 !border !border-stone-800 !shadow-2xl !shadow-black/50 !rounded-2xl",
