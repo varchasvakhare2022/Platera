@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { RecipeCategory } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { sanitizeRecipeData } from '@/lib/sanitize';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/recipes
@@ -99,7 +101,7 @@ export async function GET(request: NextRequest) {
             },
         });
     } catch (error) {
-        console.error('Error fetching recipes:', error);
+        logger.error('Error fetching recipes', error);
         return NextResponse.json({ error: 'Failed to fetch recipes' }, { status: 500 });
     }
 }
@@ -147,15 +149,23 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Images must be an array with maximum 5 URLs' }, { status: 400 });
         }
 
+        // Sanitize user input to prevent XSS
+        const sanitizedData = sanitizeRecipeData({
+            title,
+            description,
+            ingredients,
+            steps,
+        });
+
         const recipe = await prisma.recipe.create({
             data: {
-                title,
-                description: description || '',
+                title: sanitizedData.title,
+                description: sanitizedData.description || '',
                 category,
                 servings,
                 totalTime,
-                ingredients,
-                steps,
+                ingredients: sanitizedData.ingredients || [],
+                steps: sanitizedData.steps || [],
                 images: images || [],
                 authorId: user.id,
             },
@@ -175,7 +185,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json(recipe, { status: 201 });
     } catch (error) {
-        console.error('Error creating recipe:', error);
+        logger.error('Error creating recipe', error);
         return NextResponse.json({ error: 'Failed to create recipe' }, { status: 500 });
     }
 }

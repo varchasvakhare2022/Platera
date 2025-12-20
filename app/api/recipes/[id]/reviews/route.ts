@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
+import { sanitizeReviewData } from '@/lib/sanitize';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/recipes/[id]/reviews
@@ -28,7 +30,7 @@ export async function GET(
 
         return NextResponse.json(reviews);
     } catch (error) {
-        console.error('Error fetching reviews:', error);
+        logger.error('Error fetching reviews', error);
         return NextResponse.json({ error: 'Failed to fetch reviews' }, { status: 500 });
     }
 }
@@ -66,7 +68,10 @@ export async function POST(
             return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
         }
 
-        // Upsert: create if doesn't exist, update if exists
+        // Sanitize comment to prevent XSS
+        const sanitizedData = sanitizeReviewData({ comment });
+
+        // Upsert review (create or update)
         const review = await prisma.review.upsert({
             where: {
                 unique_user_recipe_review: {
@@ -76,13 +81,13 @@ export async function POST(
             },
             create: {
                 rating,
-                comment,
+                comment: sanitizedData.comment,
                 userId: user.id,
                 recipeId: params.id,
             },
             update: {
                 rating,
-                comment,
+                comment: sanitizedData.comment,
             },
             include: {
                 user: {
@@ -97,7 +102,7 @@ export async function POST(
 
         return NextResponse.json(review, { status: 201 });
     } catch (error) {
-        console.error('Error creating review:', error);
+        logger.error('Error creating review', error);
         return NextResponse.json({ error: 'Failed to create review' }, { status: 500 });
     }
 }
