@@ -21,10 +21,13 @@ import { NextResponse } from 'next/server';
  * 4. Copy signing secret to CLERK_WEBHOOK_SECRET in .env
  */
 export async function POST(req: Request) {
+    console.log('[WEBHOOK] Received webhook request');
+
     // Get webhook secret from environment
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
     if (!WEBHOOK_SECRET) {
+        console.error('[WEBHOOK] CLERK_WEBHOOK_SECRET is not set');
         throw new Error('CLERK_WEBHOOK_SECRET is not set');
     }
 
@@ -62,12 +65,14 @@ export async function POST(req: Request) {
 
     // Handle the webhook
     const eventType = evt.type;
+    console.log(`[WEBHOOK] Processing event: ${eventType}`);
 
     try {
         switch (eventType) {
             case 'user.created':
             case 'user.updated':
                 // Sync user to database
+                console.log(`[WEBHOOK] Syncing user ${evt.data.id} to database`);
                 await syncUserFromClerk(evt.data);
                 console.log(`✅ User ${eventType}:`, evt.data.id);
                 break;
@@ -75,6 +80,7 @@ export async function POST(req: Request) {
             case 'user.deleted':
                 // Delete user from database
                 if (evt.data.id) {
+                    console.log(`[WEBHOOK] Deleting user ${evt.data.id} from database`);
                     await deleteUserFromDatabase(evt.data.id);
                     console.log(`✅ User deleted:`, evt.data.id);
                 }
@@ -84,9 +90,11 @@ export async function POST(req: Request) {
                 console.log(`Unhandled webhook event: ${eventType}`);
         }
 
+        console.log(`[WEBHOOK] Successfully processed ${eventType}`);
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error(`Error handling ${eventType}:`, error);
+        console.error(`[WEBHOOK] Error handling ${eventType}:`, error);
+        console.error('[WEBHOOK] Error details:', JSON.stringify(error, null, 2));
         return new Response('Webhook handler failed', { status: 500 });
     }
 }
