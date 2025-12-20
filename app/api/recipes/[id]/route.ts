@@ -12,10 +12,10 @@ export async function GET(
 ) {
     try {
         const params = await props.params;
-        const recipe = await prisma.recipe.findUnique({
+        const recipe = await prisma.recipe.findFirst({
             where: {
                 id: params.id,
-                // deletedAt: null // Only return non-deleted recipes
+                deletedAt: null // Only return non-deleted recipes
             },
             include: {
                 author: {
