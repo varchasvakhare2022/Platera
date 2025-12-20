@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Star, Loader2, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 
 interface ReviewFormProps {
     recipeId: string;
@@ -22,7 +23,6 @@ export function ReviewForm({ recipeId, existingReview }: ReviewFormProps) {
     const [comment, setComment] = useState(existingReview?.comment || "");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,12 +46,14 @@ export function ReviewForm({ recipeId, existingReview }: ReviewFormProps) {
                 throw new Error(data.error || "Failed to submit review");
             }
 
-            setSuccess(true);
+            toast.success(existingReview ? "Review updated!" : "Review submitted!");
             setTimeout(() => {
                 router.refresh(); // Refresh to show new review
-            }, 1000);
+            }, 500);
         } catch (err: any) {
-            setError(err.message);
+            const errorMsg = err.message || "Failed to submit review";
+            setError(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setLoading(false);
         }
@@ -73,20 +75,6 @@ export function ReviewForm({ recipeId, existingReview }: ReviewFormProps) {
                     Sign in to leave a review
                 </button>
             </div>
-        );
-    }
-
-    if (success) {
-        return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="p-6 rounded-2xl bg-green-500/10 border border-green-500/20 text-center"
-            >
-                <p className="text-green-500 font-medium">
-                    ✓ Review submitted successfully!
-                </p>
-            </motion.div>
         );
     }
 

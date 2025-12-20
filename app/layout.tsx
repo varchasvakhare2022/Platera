@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Header } from "@/components/layout/Header";
+import { Toaster } from "react-hot-toast";
 import { ConditionalFooter } from "@/components/layout/ConditionalFooter";
 import "./globals.css";
 
@@ -82,6 +83,29 @@ export default function RootLayout({
                     <Header />
                     {children}
                     <ConditionalFooter />
+                    <Toaster
+                        position="top-right"
+                        toastOptions={{
+                            duration: 3000,
+                            style: {
+                                background: '#1c1917',
+                                color: '#e7e5e4',
+                                border: '1px solid #44403c',
+                            },
+                            success: {
+                                iconTheme: {
+                                    primary: '#FF6A00',
+                                    secondary: '#1c1917',
+                                },
+                            },
+                            error: {
+                                iconTheme: {
+                                    primary: '#ef4444',
+                                    secondary: '#1c1917',
+                                },
+                            },
+                        }}
+                    />
                 </body>
             </html>
         </ClerkProvider>
