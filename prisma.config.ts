@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { defineConfig, env } from "prisma/config";
 
-// Load environment variables from .env.local
+// Load environment variables from .env
 dotenv.config({
-  path: path.resolve(process.cwd(), ".env.local"),
+  path: path.resolve(process.cwd(), ".env"),
 });
 
 export default defineConfig({
