@@ -16,6 +16,7 @@ import {
     Save,
     Trash2,
 } from "lucide-react";
+import { getErrorMessage } from "@/types/errors";
 
 interface Recipe {
     id: string;
@@ -236,8 +237,8 @@ export default function EditRecipePage() {
 
             // Success Redirect
             router.push("/dashboard");
-        } catch (err: any) {
-            setError(err.message);
+        } catch (err: unknown) {
+            setError(getErrorMessage(err));
             setIsSubmitting(false);
             setIsUploadingImage(false);
         }

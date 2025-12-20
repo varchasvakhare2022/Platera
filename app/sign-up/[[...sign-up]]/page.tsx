@@ -88,9 +88,6 @@ export default function SignUpPage() {
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       });
-      if (completeSignUp.status !== "complete") {
-        console.log(JSON.stringify(completeSignUp, null, 2));
-      }
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/dashboard");

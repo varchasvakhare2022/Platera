@@ -2,7 +2,8 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
 import { syncUserFromClerk, deleteUserFromDatabase } from '@/lib/auth';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { logger } from '@/lib/logger';
 
 /**
  * Clerk Webhook Handler
@@ -20,14 +21,14 @@ import { NextResponse } from 'next/server';
  * 3. Subscribe to: user.created, user.updated, user.deleted
  * 4. Copy signing secret to CLERK_WEBHOOK_SECRET in .env
  */
-export async function POST(req: Request) {
-    console.log('[WEBHOOK] Received webhook request');
+export async function POST(req: NextRequest) {
+    logger.debug('Webhook request received');
 
     // Get webhook secret from environment
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
     if (!WEBHOOK_SECRET) {
-        console.error('[WEBHOOK] CLERK_WEBHOOK_SECRET is not set');
+        logger.error('CLERK_WEBHOOK_SECRET is not set');
         throw new Error('CLERK_WEBHOOK_SECRET is not set');
     }
 
@@ -65,36 +66,35 @@ export async function POST(req: Request) {
 
     // Handle the webhook
     const eventType = evt.type;
-    console.log(`[WEBHOOK] Processing event: ${eventType}`);
+    logger.debug(`Processing webhook event: ${eventType}`);
 
     try {
         switch (eventType) {
             case 'user.created':
             case 'user.updated':
                 // Sync user to database
-                console.log(`[WEBHOOK] Syncing user ${evt.data.id} to database`);
+                logger.info(`Syncing user to database`, { userId: evt.data.id, metadata: { eventType } });
                 await syncUserFromClerk(evt.data);
-                console.log(`✅ User ${eventType}:`, evt.data.id);
+                logger.info(`User ${eventType} completed`, { userId: evt.data.id });
                 break;
 
             case 'user.deleted':
                 // Delete user from database
                 if (evt.data.id) {
-                    console.log(`[WEBHOOK] Deleting user ${evt.data.id} from database`);
+                    logger.info(`Deleting user from database`, { userId: evt.data.id });
                     await deleteUserFromDatabase(evt.data.id);
-                    console.log(`✅ User deleted:`, evt.data.id);
+                    logger.info(`User deleted`, { userId: evt.data.id });
                 }
                 break;
 
             default:
-                console.log(`Unhandled webhook event: ${eventType}`);
+                logger.warn(`Unhandled webhook event: ${eventType}`);
         }
 
-        console.log(`[WEBHOOK] Successfully processed ${eventType}`);
+        logger.debug(`Successfully processed ${eventType}`);
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error(`[WEBHOOK] Error handling ${eventType}:`, error);
-        console.error('[WEBHOOK] Error details:', JSON.stringify(error, null, 2));
+        logger.error(`Error handling webhook ${eventType}`, error, { metadata: { eventType } });
         return new Response('Webhook handler failed', { status: 500 });
     }
 }

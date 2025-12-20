@@ -16,6 +16,7 @@ import {
   Image as ImageIcon,
   Save,
 } from "lucide-react";
+import { getErrorMessage } from "@/types/errors";
 
 export default function CreateRecipePage() {
   const { user, isLoaded } = useUser();
@@ -186,7 +187,7 @@ export default function CreateRecipePage() {
         });
         throw new Error(
           errorData.error?.message ||
-            `Upload failed: ${uploadRes.status} ${uploadRes.statusText}`
+          `Upload failed: ${uploadRes.status} ${uploadRes.statusText}`
         );
       }
 
@@ -255,8 +256,8 @@ export default function CreateRecipePage() {
 
       // Success Redirect
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(getErrorMessage(err));
       setIsSubmitting(false);
       setIsUploadingImage(false);
     }
@@ -299,11 +300,10 @@ export default function CreateRecipePage() {
                 className={`
                                     relative aspect-[3/4] md:aspect-square rounded-2xl border-2 border-dashed border-stone-800 bg-stone-900/30 
                                     flex flex-col items-center justify-center cursor-pointer transition-all duration-300 group overflow-hidden
-                                    ${
-                                      imagePreview
-                                        ? "border-none"
-                                        : "hover:border-stone-600 hover:bg-stone-900/50"
-                                    }
+                                    ${imagePreview
+                    ? "border-none"
+                    : "hover:border-stone-600 hover:bg-stone-900/50"
+                  }
                                 `}
               >
                 <input
@@ -438,11 +438,10 @@ export default function CreateRecipePage() {
                       onClick={() => setCategory(type)}
                       className={`
                                                 flex items-center justify-center py-2.5 rounded-xl border text-sm font-medium transition-all
-                                                ${
-                                                  category === type
-                                                    ? "bg-amber-500 text-black border-amber-500"
-                                                    : "bg-stone-900/30 text-stone-400 border-stone-800 hover:border-stone-600 hover:text-stone-200"
-                                                }
+                                                ${category === type
+                          ? "bg-amber-500 text-black border-amber-500"
+                          : "bg-stone-900/30 text-stone-400 border-stone-800 hover:border-stone-600 hover:text-stone-200"
+                        }
                                             `}
                     >
                       {type.replace("_", "-")}
@@ -596,9 +595,8 @@ export default function CreateRecipePage() {
               className="relative px-8 py-3 bg-[#FF6A00] text-black font-bold rounded-xl shadow-[0_0_20px_rgba(255,106,0,0.2)] hover:shadow-[0_0_30px_rgba(255,106,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             >
               <span
-                className={`flex items-center gap-2 ${
-                  isSubmitting ? "opacity-0" : "opacity-100"
-                }`}
+                className={`flex items-center gap-2 ${isSubmitting ? "opacity-0" : "opacity-100"
+                  }`}
               >
                 <ChefHat className="w-5 h-5" />
                 Publish Recipe
