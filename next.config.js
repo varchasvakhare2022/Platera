@@ -26,6 +26,13 @@ const nextConfig = {
         // your project has TypeScript errors.
         ignoreBuildErrors: true,
     },
+
+    // Request body size limits
+    api: {
+        bodyParser: {
+            sizeLimit: '10mb', // Limit request body size
+        },
+    },
 };
 
 module.exports = nextConfig;
