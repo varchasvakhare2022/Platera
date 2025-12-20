@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
         // Build where clause
         const where: any = {
-            deletedAt: null, // Exclude soft-deleted recipes
+            // deletedAt: null, // Exclude soft-deleted recipes (commented until migration runs)
             ...(category && { category }),
             ...(authorId && { authorId }),
             ...(maxTime && { totalTime: { lte: maxTime } }),
