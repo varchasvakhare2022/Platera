@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
 import { Clock, Users, ChevronLeft, Calendar, ChefHat, Star } from 'lucide-react';
 import Link from 'next/link';
+import { ReviewForm } from '@/components/recipes/ReviewForm';
+import { getCurrentUser } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,6 +57,12 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
     if (!recipe) {
         notFound();
     }
+
+    // Get current user and their review
+    const currentUser = await getCurrentUser();
+    const userReview = currentUser
+        ? recipe.reviews.find((r) => r.user.id === currentUser.id)
+        : null;
 
     const avgRating = recipe.reviews.length > 0
         ? (recipe.reviews.reduce((acc, r) => acc + r.rating, 0) / recipe.reviews.length).toFixed(1)
@@ -204,9 +212,23 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                     </div>
                 </div>
 
-                {/* Reviews Section Placeholder */}
+                {/* Review Form Section */}
+                <div className="mt-24 pt-12 border-t border-stone-900">
+                    <h3 className="text-2xl font-bold text-white mb-6">
+                        {userReview ? "Your Review" : "Leave a Review"}
+                    </h3>
+                    <ReviewForm
+                        recipeId={recipe.id}
+                        existingReview={userReview ? {
+                            rating: userReview.rating,
+                            comment: userReview.comment
+                        } : null}
+                    />
+                </div>
+
+                {/* Reviews Section */}
                 {recipe.reviews.length > 0 && (
-                    <div className="mt-24 pt-12 border-t border-stone-900">
+                    <div className="mt-12">
                         <h3 className="text-2xl font-bold text-white mb-8">Community Reviews</h3>
                         <div className="grid gap-6">
                             {recipe.reviews.map((review) => (
