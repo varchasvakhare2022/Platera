@@ -212,19 +212,21 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                     </div>
                 </div>
 
-                {/* Review Form Section */}
-                <div className="mt-24 pt-12 border-t border-stone-900">
-                    <h3 className="text-2xl font-bold text-white mb-6">
-                        {userReview ? "Your Review" : "Leave a Review"}
-                    </h3>
-                    <ReviewForm
-                        recipeId={recipe.id}
-                        existingReview={userReview ? {
-                            rating: userReview.rating,
-                            comment: userReview.comment
-                        } : null}
-                    />
-                </div>
+                {/* Review Form Section - Only show if user is not the recipe author */}
+                {currentUser && currentUser.id !== recipe.authorId && (
+                    <div className="mt-24 pt-12 border-t border-stone-900">
+                        <h3 className="text-2xl font-bold text-white mb-6">
+                            {userReview ? "Your Review" : "Leave a Review"}
+                        </h3>
+                        <ReviewForm
+                            recipeId={recipe.id}
+                            existingReview={userReview ? {
+                                rating: userReview.rating,
+                                comment: userReview.comment
+                            } : null}
+                        />
+                    </div>
+                )}
 
                 {/* Reviews Section */}
                 {recipe.reviews.length > 0 && (

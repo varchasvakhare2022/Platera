@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Edit, Trash2, Plus, ArrowUpRight, Clock, Users, Star } from 'lucide-react';
 import Link from 'next/link';
@@ -59,6 +60,7 @@ interface DashboardData {
 
 export default function DashboardPage() {
     const { user, isLoaded } = useUser();
+    const router = useRouter();
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'recipes' | 'saved' | 'reviews'>('recipes');
@@ -200,7 +202,11 @@ export default function DashboardPage() {
                                 {data?.recipes && data.recipes.length > 0 ? (
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {data.recipes.map((recipe) => (
-                                            <div key={recipe.id} className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors">
+                                            <div
+                                                key={recipe.id}
+                                                onClick={() => router.push(`/explore/${recipe.id}`)}
+                                                className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors cursor-pointer"
+                                            >
                                                 {/* Image */}
                                                 <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden">
                                                     <img
@@ -211,7 +217,11 @@ export default function DashboardPage() {
 
                                                     {/* Actions Overlay */}
                                                     <div className="absolute top-2 right-2 flex gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <Link href={`/explore/${recipe.id}/edit`} className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-white hover:text-black transition-colors">
+                                                        <Link
+                                                            href={`/explore/${recipe.id}/edit`}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-white hover:text-black transition-colors"
+                                                        >
                                                             <Edit className="w-3.5 h-3.5" />
                                                         </Link>
                                                     </div>
