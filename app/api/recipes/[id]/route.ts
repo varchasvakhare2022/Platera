@@ -12,10 +12,9 @@ export async function GET(
 ) {
     try {
         const params = await props.params;
-        const recipe = await prisma.recipe.findFirst({
+        const recipe = await prisma.recipe.findUnique({
             where: {
                 id: params.id,
-                deletedAt: null // Only return non-deleted recipes
             },
             include: {
                 author: {
@@ -177,10 +176,9 @@ export async function DELETE(
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
-        // Soft delete: set deletedAt instead of removing from database
-        await prisma.recipe.update({
+        // Hard delete
+        await prisma.recipe.delete({
             where: { id: params.id },
-            data: { deletedAt: new Date() },
         });
 
         return NextResponse.json({ success: true });
