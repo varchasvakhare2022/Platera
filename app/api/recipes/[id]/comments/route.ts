@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
+import { sanitizeText } from '@/lib/sanitize';
+import { logger } from '@/lib/logger';
 
 /**
  * GET /api/recipes/[id]/comments
@@ -12,8 +14,13 @@ export async function GET(
 ) {
     try {
         const params = await props.params;
+
+        // Fetch top-level comments with their replies
         const comments = await prisma.comment.findMany({
-            where: { recipeId: params.id },
+            where: {
+                recipeId: params.id,
+                parentId: null, // Only top-level comments
+            },
             include: {
                 user: {
                     select: {
@@ -22,13 +29,25 @@ export async function GET(
                         profileImage: true,
                     },
                 },
+                replies: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                    orderBy: { createdAt: 'asc' },
+                },
             },
             orderBy: { createdAt: 'desc' },
         });
 
         return NextResponse.json(comments);
     } catch (error) {
-        console.error('Error fetching comments:', error);
+        logger.error('Error fetching comments', error);
         return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 });
     }
 }
@@ -50,27 +69,37 @@ export async function POST(
         }
 
         const body = await request.json();
-        const { content } = body;
+        const { content, parentId } = body;
 
         // Validation
-        if (!content || content.trim().length === 0) {
+        if (!content || typeof content !== 'string' || content.trim().length === 0) {
             return NextResponse.json({ error: 'Comment content is required' }, { status: 400 });
         }
 
-        // Check if recipe exists
-        const recipe = await prisma.recipe.findUnique({
-            where: { id: params.id },
-        });
+        if (content.length > 1000) {
+            return NextResponse.json({ error: 'Comment must be less than 1000 characters' }, { status: 400 });
+        }
 
-        if (!recipe) {
-            return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
+        // Sanitize content
+        const sanitizedContent = sanitizeText(content.trim());
+
+        // If parentId is provided, verify it exists and belongs to this recipe
+        if (parentId) {
+            const parentComment = await prisma.comment.findUnique({
+                where: { id: parentId },
+            });
+
+            if (!parentComment || parentComment.recipeId !== params.id) {
+                return NextResponse.json({ error: 'Invalid parent comment' }, { status: 400 });
+            }
         }
 
         const comment = await prisma.comment.create({
             data: {
-                content: content.trim(),
+                content: sanitizedContent,
                 userId: user.id,
                 recipeId: params.id,
+                parentId: parentId || null,
             },
             include: {
                 user: {
@@ -85,7 +114,7 @@ export async function POST(
 
         return NextResponse.json(comment, { status: 201 });
     } catch (error) {
-        console.error('Error creating comment:', error);
+        logger.error('Error creating comment', error);
         return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
     }
 }

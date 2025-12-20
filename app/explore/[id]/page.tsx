@@ -1,4 +1,4 @@
-
+```
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Image from 'next/image';
@@ -6,6 +6,8 @@ import { Clock, Users, ChevronLeft, Calendar, ChefHat, Star } from 'lucide-react
 import Link from 'next/link';
 import { ReviewForm } from '@/components/recipes/ReviewForm';
 import { getCurrentUser } from '@/lib/auth';
+import { PageTransition } from "@/components/animations/PageTransition";
+import { CommentSection } from "@/components/recipes/CommentSection";
 
 export const dynamic = 'force-dynamic';
 
@@ -112,10 +114,11 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                     <div className="max-w-4xl mx-auto space-y-6">
                         {/* Tags */}
                         <div className="flex items-center gap-3">
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase border ${recipe.category === 'VEG' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
-                                recipe.category === 'NON_VEG' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
-                                    'border-yellow-500/30 text-yellow-400 bg-yellow-500/10'
-                                }`}>
+                            <span className={`px - 3 py - 1 rounded - full text - xs font - bold tracking - wider uppercase border ${
+    recipe.category === 'VEG' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
+        recipe.category === 'NON_VEG' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
+            'border-yellow-500/30 text-yellow-400 bg-yellow-500/10'
+} `}>
                                 {recipe.category}
                             </span>
                             {avgRating && (
@@ -257,6 +260,11 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                         </div>
                     </div>
                 )}
+
+                {/* Comments Section */}
+                <div className="mt-12">
+                    <CommentSection recipeId={recipe.id} />
+                </div>
             </div>
         </div>
     );
