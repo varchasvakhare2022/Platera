@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { z } from "zod";
+import { getErrorMessage } from "@/types/errors";
 
 const signUpSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -69,9 +70,8 @@ export default function SignUpPage() {
       // prepare email verification
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
-    } catch (err: any) {
-      const errorMessage =
-        err.errors?.[0]?.longMessage || "An error occurred. Please try again.";
+    } catch (err: unknown) {
+      const errorMessage = getErrorMessage(err);
       console.error("error", errorMessage);
       setErrors({ form: errorMessage });
     } finally {
@@ -95,10 +95,8 @@ export default function SignUpPage() {
         await setActive({ session: completeSignUp.createdSessionId });
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      const errorMessage =
-        err.errors?.[0]?.longMessage ||
-        "Verification failed. Please try again.";
+    } catch (err: unknown) {
+      const errorMessage = getErrorMessage(err);
 
       // If verification was already completed, offer to restart
       if (errorMessage.includes("already been verified")) {
@@ -108,7 +106,6 @@ export default function SignUpPage() {
         setTimeout(() => {
           setPendingVerification(false);
           setCode("");
-          setErrors({});
         }, 2000);
       } else {
         // Log as warning since incorrect code is a predictable user error

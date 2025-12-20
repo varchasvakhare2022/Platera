@@ -4,6 +4,7 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { getErrorMessage } from "@/types/errors";
 import { Loader2, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function ContinueSignUpPage() {
@@ -35,9 +36,8 @@ export default function ContinueSignUpPage() {
 
             // Redirect to dashboard
             router.push("/dashboard");
-        } catch (err: any) {
-            const errorMessage =
-                err.errors?.[0]?.longMessage || "Failed to set username. Please try again.";
+        } catch (err: unknown) {
+            const errorMessage = getErrorMessage(err);
             setError(errorMessage);
             setLoading(false);
         }

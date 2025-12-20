@@ -4,6 +4,7 @@ import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { getErrorMessage } from "@/types/errors";
 import { Loader2, ArrowRight, AlertCircle, ChefHat, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { z } from 'zod';
@@ -57,26 +58,10 @@ export default function SignInPage() {
             } else {
                 console.error(JSON.stringify(result, null, 2));
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Sign-in error:', JSON.stringify(err, null, 2));
-
-            const firstError = err.errors?.[0];
-            const errorCode = firstError?.code;
-            const errorMessage = firstError?.longMessage || firstError?.message || 'Failed to sign in';
-
-            if (errorCode === 'form_identifier_not_found') {
-                setErrors({ identifier: "No account found with this email or username. Please check your spelling or create a new account." });
-            } else if (
-                errorCode === 'strategy_for_param_invalid' ||
-                errorCode === 'strategy_for_user_invalid' ||
-                errorMessage?.toLowerCase().includes('verification strategy is not valid')
-            ) {
-                setErrors({ form: 'No password set for this account. You MUST use the Google or Discord button to log in.' });
-            } else if (errorCode === 'form_password_incorrect') {
-                setErrors({ password: "Incorrect password. Please try again or use the Forgot Password link." });
-            } else {
-                setErrors({ form: errorMessage });
-            }
+            const errorMessage = getErrorMessage(err);
+            setErrors({ form: errorMessage });
         } finally {
             setLoading(false);
         }
