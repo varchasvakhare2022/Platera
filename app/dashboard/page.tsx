@@ -204,8 +204,17 @@ export default function DashboardPage() {
                                         {data.recipes.map((recipe) => (
                                             <div
                                                 key={recipe.id}
+                                                role="button"
+                                                tabIndex={0}
                                                 onClick={() => router.push(`/explore/${recipe.id}`)}
-                                                className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors cursor-pointer"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                        e.preventDefault();
+                                                        router.push(`/explore/${recipe.id}`);
+                                                    }
+                                                }}
+                                                className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                                aria-label={`View ${recipe.title} recipe`}
                                             >
                                                 {/* Image */}
                                                 <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden">
@@ -221,6 +230,7 @@ export default function DashboardPage() {
                                                             href={`/explore/${recipe.id}/edit`}
                                                             onClick={(e) => e.stopPropagation()}
                                                             className="p-2 bg-black/60 backdrop-blur-sm rounded-lg text-white hover:bg-white hover:text-black transition-colors"
+                                                            aria-label="Edit recipe"
                                                         >
                                                             <Edit className="w-3.5 h-3.5" />
                                                         </Link>

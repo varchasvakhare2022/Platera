@@ -65,12 +65,13 @@ export function ReviewForm({ recipeId, existingReview }: ReviewFormProps) {
         return (
             <div className="p-6 rounded-2xl bg-stone-900/30 border border-stone-800/50 text-center">
                 <p className="text-stone-400 mb-4">Sign in to leave a review</p>
-                <a
-                    href="/sign-in"
-                    className="inline-block px-6 py-2 bg-[#FF6A00] hover:bg-[#FF8533] text-black font-bold rounded-lg transition-all"
+                <button
+                    onClick={() => window.location.href = '/sign-in'}
+                    className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-lg transition-colors"
+                    aria-label="Sign in to leave a review"
                 >
-                    Sign In
-                </a>
+                    Sign in to leave a review
+                </button>
             </div>
         );
     }
@@ -113,8 +114,8 @@ export function ReviewForm({ recipeId, existingReview }: ReviewFormProps) {
                             >
                                 <Star
                                     className={`w-8 h-8 transition-colors ${star <= (hoverRating || rating)
-                                            ? "fill-[#FF6A00] text-[#FF6A00]"
-                                            : "fill-none text-stone-600"
+                                        ? "fill-[#FF6A00] text-[#FF6A00]"
+                                        : "fill-none text-stone-600"
                                         }`}
                                 />
                             </button>
