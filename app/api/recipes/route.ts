@@ -35,6 +35,9 @@ export async function GET(request: NextRequest) {
             }),
         };
 
+        console.log('[RECIPES API] Query params:', { category, authorId, minRating, maxTime, sortBy, search, limit, page });
+        console.log('[RECIPES API] Where clause:', JSON.stringify(where));
+
         const recipes = await prisma.recipe.findMany({
             where,
             include: {
@@ -61,6 +64,8 @@ export async function GET(request: NextRequest) {
             take: limit,
             skip: (page - 1) * limit,
         });
+
+        console.log('[RECIPES API] Found recipes:', recipes.length);
 
         const total = await prisma.recipe.count({ where });
 
@@ -90,6 +95,8 @@ export async function GET(request: NextRequest) {
             recipesWithAvgRating.sort((a, b) => b._count.reviews - a._count.reviews);
         }
         // 'newest' is already sorted by default (orderBy createdAt desc)
+
+        console.log('[RECIPES API] Returning response with', recipesWithAvgRating.length, 'recipes');
 
         return NextResponse.json({
             recipes: recipesWithAvgRating,
