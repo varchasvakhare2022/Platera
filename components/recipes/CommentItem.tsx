@@ -5,6 +5,7 @@ import { MessageCircle, MoreVertical } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { CommentForm } from "./CommentForm";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 interface Comment {
     id: string;
@@ -33,6 +34,7 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [showReplies, setShowReplies] = useState(true);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const formatTimeAgo = (date: string) => {
         const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
@@ -50,9 +52,9 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
     };
 
     const handleDelete = async () => {
-        if (!confirm('Are you sure you want to delete this comment?')) return;
-
         setIsDeleting(true);
+        setShowDeleteModal(false);
+
         try {
             const response = await fetch(`/api/recipes/${recipeId}/comments?commentId=${comment.id}`, {
                 method: 'DELETE',
@@ -145,7 +147,7 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
                         {/* Delete button - only show if user can delete */}
                         {canDelete && (
                             <button
-                                onClick={handleDelete}
+                                onClick={() => setShowDeleteModal(true)}
                                 disabled={isDeleting}
                                 className="text-sm text-stone-400 hover:text-red-500 transition-colors disabled:opacity-50"
                             >
@@ -201,6 +203,18 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Delete Confirmation Modal */}
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                title="Delete Comment"
+                message="Are you sure you want to delete this comment? This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                variant="danger"
+                onConfirm={handleDelete}
+                onCancel={() => setShowDeleteModal(false)}
+            />
         </div>
     );
 }
