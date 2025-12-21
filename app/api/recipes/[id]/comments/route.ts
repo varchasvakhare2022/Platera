@@ -19,7 +19,6 @@ export async function GET(
         const comments = await prisma.comment.findMany({
             where: {
                 recipeId: params.id,
-                parentId: null, // Only top-level comments
             },
             include: {
                 user: {
@@ -28,18 +27,6 @@ export async function GET(
                         name: true,
                         profileImage: true,
                     },
-                },
-                replies: {
-                    include: {
-                        user: {
-                            select: {
-                                id: true,
-                                name: true,
-                                profileImage: true,
-                            },
-                        },
-                    },
-                    orderBy: { createdAt: 'asc' },
                 },
             },
             orderBy: { createdAt: 'desc' },
@@ -83,23 +70,11 @@ export async function POST(
         // Sanitize content
         const sanitizedContent = sanitizeText(content.trim());
 
-        // If parentId is provided, verify it exists and belongs to this recipe
-        if (parentId) {
-            const parentComment = await prisma.comment.findUnique({
-                where: { id: parentId },
-            });
-
-            if (!parentComment || parentComment.recipeId !== params.id) {
-                return NextResponse.json({ error: 'Invalid parent comment' }, { status: 400 });
-            }
-        }
-
         const comment = await prisma.comment.create({
             data: {
                 content: sanitizedContent,
                 userId: user.id,
                 recipeId: params.id,
-                parentId: parentId || null,
             },
             include: {
                 user: {
