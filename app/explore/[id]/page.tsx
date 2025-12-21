@@ -7,6 +7,7 @@ import { ReviewForm } from '@/components/recipes/ReviewForm';
 import { getCurrentUser } from '@/lib/auth';
 import { PageTransition } from "@/components/animations/PageTransition";
 import { CommentSection } from "@/components/recipes/CommentSection";
+import { SaveButton } from "@/components/recipes/SaveButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -109,27 +110,22 @@ export default async function RecipeDetailsPage({ params }: PageProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
 
                 {/* Hero Content */}
-                <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:p-20">
-                    <div className="max-w-4xl mx-auto space-y-6">
-                        {/* Tags */}
-                        <div className="flex items-center gap-3">
-                            <span className={`px - 3 py - 1 rounded - full text - xs font - bold tracking - wider uppercase border ${recipe.category === 'VEG' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
-                                    recipe.category === 'NON_VEG' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
-                                        'border-yellow-500/30 text-yellow-400 bg-yellow-500/10'
-                                } `}>
-                                {recipe.category}
-                            </span>
-                            {avgRating && (
-                                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
-                                    <Star className="w-3 h-3 fill-current" />
-                                    {avgRating} ({recipe.reviews.length})
-                                </div>
-                            )}
+                {/* Content Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    <div className="max-w-6xl mx-auto">
+                        {/* Category Badge */}
+                        <div className="inline-block px-4 py-1.5 rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-400 text-sm font-medium mb-4">
+                            {recipe.category === 'NON_VEG' ? 'Non-Vegetarian' : recipe.category === 'VEG' ? 'Vegetarian' : 'Egg'}
                         </div>
 
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
-                            {recipe.title}
-                        </h1>
+                        {/* Title and Save Button */}
+                        <div className="flex items-start justify-between gap-4 mb-6">
+                            <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight flex-1">
+                                {recipe.title}
+                            </h1>
+                            <SaveButton recipeId={recipe.id} variant="button" size="lg" />
+                        </div>
 
                         {recipe.description && (
                             <p className="text-lg md:text-xl text-stone-400 max-w-2xl leading-relaxed">
