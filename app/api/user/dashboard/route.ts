@@ -88,9 +88,9 @@ export async function GET(request: NextRequest) {
         const stats = {
             totalRecipes: recipes.length,
             totalReviews: reviews.length,
-            totalSaved: 0, // savedRecipes.length,
+            totalSaved: savedRecipes.length, // Fixed: use savedRecipes.length
             // Calculate total reviews received on user's recipes
-            totalReviewsReceived: recipes.reduce((acc, recipe) => acc + recipe._count.reviews, 0)
+            totalReviewsReceived: recipes.reduce((sum, recipe) => sum + (recipe._count?.reviews || 0), 0)
         };
 
         // Format Saved Recipes to match Recipe interface
