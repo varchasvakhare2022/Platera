@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
             user: safeUser,
             recipes,
-            savedRecipes: formattedSavedRecipes,
+            savedRecipes,
             reviews,
             stats,
             debug // Include debug info
