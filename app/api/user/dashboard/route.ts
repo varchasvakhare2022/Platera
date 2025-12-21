@@ -44,10 +44,8 @@ export async function GET(request: NextRequest) {
             orderBy: { createdAt: 'desc' }
         });
 
-        // 3. Fetch Saved Recipes - DISABLED due to missing DB table
-        const savedRecipes: any[] = [];
-        /* 
-        await prisma.savedRecipe.findMany({
+        // 3. Fetch Saved Recipes
+        const savedRecipesData = await prisma.savedRecipe.findMany({
             where: { userId: user.id },
             include: {
                 recipe: {
@@ -56,14 +54,24 @@ export async function GET(request: NextRequest) {
                             select: { reviews: true, comments: true }
                         },
                         author: {
-                            select: { id: true, name: true, profileImage: true }
+                            select: { id: true, clerkId: true, name: true, profileImage: true }
+                        },
+                        reviews: {
+                            select: { rating: true }
                         }
                     }
                 }
             },
             orderBy: { createdAt: 'desc' }
         });
-        */
+
+        // Extract recipes from saved recipes and calculate avg rating
+        const savedRecipes = savedRecipesData.map(saved => ({
+            ...saved.recipe,
+            avgRating: saved.recipe.reviews.length > 0
+                ? saved.recipe.reviews.reduce((sum, r) => sum + r.rating, 0) / saved.recipe.reviews.length
+                : 0
+        }));
 
         // 4. Fetch User's Reviews
         const reviews = await prisma.review.findMany({
