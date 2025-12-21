@@ -20,6 +20,7 @@ export async function GET(
                 author: {
                     select: {
                         id: true,
+                        clerkId: true, // Add Clerk ID for authorization checks
                         name: true,
                         profileImage: true,
                     },

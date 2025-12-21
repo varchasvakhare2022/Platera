@@ -12,6 +12,7 @@ interface Comment {
     createdAt: string;
     user: {
         id: string;
+        clerkId: string;
         name: string | null;
         profileImage: string | null;
     };
@@ -69,15 +70,16 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
     };
 
     // Check if current user can delete this comment
+    // Compare Clerk IDs instead of database IDs
     const canDelete = currentUserId && (
-        comment.user.id === currentUserId || // Comment owner
+        comment.user.clerkId === currentUserId || // Comment owner
         recipeAuthorId === currentUserId // Recipe owner
     );
 
     // Debug logging
     console.log('Delete check:', {
         currentUserId,
-        commentUserId: comment.user.id,
+        commentUserClerkId: comment.user.clerkId,
         recipeAuthorId,
         canDelete
     });

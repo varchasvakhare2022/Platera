@@ -25,6 +25,7 @@ export async function GET(
                 user: {
                     select: {
                         id: true,
+                        clerkId: true,
                         name: true,
                         profileImage: true,
                     },
@@ -34,6 +35,7 @@ export async function GET(
                         user: {
                             select: {
                                 id: true,
+                                clerkId: true,
                                 name: true,
                                 profileImage: true,
                             },
@@ -105,6 +107,7 @@ export async function POST(
                 user: {
                     select: {
                         id: true,
+                        clerkId: true,
                         name: true,
                         profileImage: true,
                     },

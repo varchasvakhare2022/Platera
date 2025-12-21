@@ -43,7 +43,8 @@ export function CommentSection({ recipeId }: CommentSectionProps) {
             if (recipeRes.ok) {
                 const recipeData = await recipeRes.json();
                 console.log('Recipe data:', recipeData); // Debug log
-                setRecipeAuthorId(recipeData.authorId || recipeData.author?.id);
+                // Use author.clerkId for Clerk ID comparison
+                setRecipeAuthorId(recipeData.author?.clerkId);
             }
         } catch (error) {
             console.error("Failed to fetch comments:", error);
