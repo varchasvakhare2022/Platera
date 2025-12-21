@@ -22,13 +22,16 @@ interface CommentItemProps {
     comment: Comment;
     recipeId: string;
     currentUserId?: string;
+    recipeAuthorId?: string; // To check if current user is recipe owner
     onReplySuccess?: () => void;
+    onDeleteSuccess?: () => void;
     isReply?: boolean; // Track if this is a nested reply
 }
 
-export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess, isReply = false }: CommentItemProps) {
+export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, onReplySuccess, onDeleteSuccess, isReply = false }: CommentItemProps) {
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [showReplies, setShowReplies] = useState(true);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const formatTimeAgo = (date: string) => {
         const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
@@ -44,6 +47,32 @@ export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess, 
         setShowReplyForm(false);
         onReplySuccess?.();
     };
+
+    const handleDelete = async () => {
+        if (!confirm('Are you sure you want to delete this comment?')) return;
+
+        setIsDeleting(true);
+        try {
+            const response = await fetch(`/api/recipes/${recipeId}/comments?commentId=${comment.id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) throw new Error('Failed to delete comment');
+
+            onDeleteSuccess?.();
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+            alert('Failed to delete comment');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    // Check if current user can delete this comment
+    const canDelete = currentUserId && (
+        comment.user.id === currentUserId || // Comment owner
+        recipeAuthorId === currentUserId // Recipe owner
+    );
 
     return (
         <div className="space-y-4">
@@ -102,6 +131,17 @@ export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess, 
                                 {showReplies ? "Hide" : "Show"} {comment.replies.length} {comment.replies.length === 1 ? "reply" : "replies"}
                             </button>
                         )}
+
+                        {/* Delete button - only show if user can delete */}
+                        {canDelete && (
+                            <button
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                                className="text-sm text-stone-400 hover:text-red-500 transition-colors disabled:opacity-50"
+                            >
+                                {isDeleting ? "Deleting..." : "Delete"}
+                            </button>
+                        )}
                     </div>
 
                     {/* Reply Form */}
@@ -142,7 +182,9 @@ export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess, 
                                 comment={reply}
                                 recipeId={recipeId}
                                 currentUserId={currentUserId}
+                                recipeAuthorId={recipeAuthorId}
                                 onReplySuccess={onReplySuccess}
+                                onDeleteSuccess={onDeleteSuccess}
                                 isReply={true}
                             />
                         ))}

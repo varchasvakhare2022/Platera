@@ -118,3 +118,64 @@ export async function POST(
         return NextResponse.json({ error: 'Failed to create comment' }, { status: 500 });
     }
 }
+
+/**
+ * DELETE /api/recipes/[id]/comments?commentId=xxx
+ * Delete a comment (recipe owner or comment owner only)
+ */
+export async function DELETE(
+    request: NextRequest,
+    props: { params: Promise<{ id: string }> }
+) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const params = await props.params;
+        const { searchParams } = new URL(request.url);
+        const commentId = searchParams.get('commentId');
+
+        if (!commentId) {
+            return NextResponse.json({ error: 'Comment ID is required' }, { status: 400 });
+        }
+
+        // Get the comment
+        const comment = await prisma.comment.findUnique({
+            where: { id: commentId },
+            include: {
+                recipe: {
+                    select: { authorId: true },
+                },
+            },
+        });
+
+        if (!comment) {
+            return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
+        }
+
+        // Check if comment belongs to this recipe
+        if (comment.recipeId !== params.id) {
+            return NextResponse.json({ error: 'Comment does not belong to this recipe' }, { status: 400 });
+        }
+
+        // Check authorization: user must be comment owner OR recipe owner
+        const isCommentOwner = comment.userId === user.id;
+        const isRecipeOwner = comment.recipe.authorId === user.id;
+
+        if (!isCommentOwner && !isRecipeOwner) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
+        // Delete the comment (cascade will delete replies)
+        await prisma.comment.delete({
+            where: { id: commentId },
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        logger.error('Error deleting comment', error);
+        return NextResponse.json({ error: 'Failed to delete comment' }, { status: 500 });
+    }
+}

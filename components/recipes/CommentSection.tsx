@@ -27,13 +27,22 @@ export function CommentSection({ recipeId }: CommentSectionProps) {
     const { user, isLoaded } = useUser();
     const [comments, setComments] = useState<Comment[]>([]);
     const [loading, setLoading] = useState(true);
+    const [recipeAuthorId, setRecipeAuthorId] = useState<string>();
 
     const fetchComments = async () => {
         try {
-            const res = await fetch(`/api/recipes/${recipeId}/comments`);
-            if (res.ok) {
-                const data = await res.json();
+            // Fetch comments
+            const commentsRes = await fetch(`/api/recipes/${recipeId}/comments`);
+            if (commentsRes.ok) {
+                const data = await commentsRes.json();
                 setComments(data);
+            }
+
+            // Fetch recipe to get author ID
+            const recipeRes = await fetch(`/api/recipes/${recipeId}`);
+            if (recipeRes.ok) {
+                const recipeData = await recipeRes.json();
+                setRecipeAuthorId(recipeData.authorId);
             }
         } catch (error) {
             console.error("Failed to fetch comments:", error);
@@ -96,7 +105,9 @@ export function CommentSection({ recipeId }: CommentSectionProps) {
                             comment={comment}
                             recipeId={recipeId}
                             currentUserId={user?.id}
+                            recipeAuthorId={recipeAuthorId}
                             onReplySuccess={handleCommentSuccess}
+                            onDeleteSuccess={handleCommentSuccess}
                         />
                     ))}
                 </div>
