@@ -93,12 +93,6 @@ export async function GET(request: NextRequest) {
             totalReviewsReceived: recipes.reduce((sum, recipe) => sum + (recipe._count?.reviews || 0), 0)
         };
 
-        // Format Saved Recipes to match Recipe interface
-        const formattedSavedRecipes = savedRecipes.map(saved => ({
-            ...saved.recipe,
-            savedAt: saved.createdAt
-        }));
-
         // DEBUG DIAGNOSIS
         const duplicates = await prisma.user.findMany({
             where: { email: user.email },
