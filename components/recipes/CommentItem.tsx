@@ -74,6 +74,14 @@ export function CommentItem({ comment, recipeId, currentUserId, recipeAuthorId, 
         recipeAuthorId === currentUserId // Recipe owner
     );
 
+    // Debug logging
+    console.log('Delete check:', {
+        currentUserId,
+        commentUserId: comment.user.id,
+        recipeAuthorId,
+        canDelete
+    });
+
     return (
         <div className="space-y-4">
             {/* Main Comment */}
