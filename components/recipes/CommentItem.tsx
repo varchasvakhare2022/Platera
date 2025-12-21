@@ -23,9 +23,10 @@ interface CommentItemProps {
     recipeId: string;
     currentUserId?: string;
     onReplySuccess?: () => void;
+    isReply?: boolean; // Track if this is a nested reply
 }
 
-export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess }: CommentItemProps) {
+export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess, isReply = false }: CommentItemProps) {
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [showReplies, setShowReplies] = useState(true);
 
@@ -82,13 +83,16 @@ export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess }
 
                     {/* Actions */}
                     <div className="flex items-center gap-4">
-                        <button
-                            onClick={() => setShowReplyForm(!showReplyForm)}
-                            className="text-sm text-stone-400 hover:text-orange-500 transition-colors flex items-center gap-1"
-                        >
-                            <MessageCircle className="w-4 h-4" />
-                            Reply
-                        </button>
+                        {/* Only show Reply button on top-level comments */}
+                        {!isReply && (
+                            <button
+                                onClick={() => setShowReplyForm(!showReplyForm)}
+                                className="text-sm text-stone-400 hover:text-orange-500 transition-colors flex items-center gap-1"
+                            >
+                                <MessageCircle className="w-4 h-4" />
+                                Reply
+                            </button>
+                        )}
 
                         {comment.replies && comment.replies.length > 0 && (
                             <button
@@ -139,6 +143,7 @@ export function CommentItem({ comment, recipeId, currentUserId, onReplySuccess }
                                 recipeId={recipeId}
                                 currentUserId={currentUserId}
                                 onReplySuccess={onReplySuccess}
+                                isReply={true}
                             />
                         ))}
                     </motion.div>
