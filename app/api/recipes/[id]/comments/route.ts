@@ -19,6 +19,7 @@ export async function GET(
         const comments = await prisma.comment.findMany({
             where: {
                 recipeId: params.id,
+                parentId: null, // Only top-level comments
             },
             include: {
                 user: {
@@ -27,6 +28,18 @@ export async function GET(
                         name: true,
                         profileImage: true,
                     },
+                },
+                replies: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                profileImage: true,
+                            },
+                        },
+                    },
+                    orderBy: { createdAt: 'asc' },
                 },
             },
             orderBy: { createdAt: 'desc' },
