@@ -42,7 +42,8 @@ export function CommentSection({ recipeId }: CommentSectionProps) {
             const recipeRes = await fetch(`/api/recipes/${recipeId}`);
             if (recipeRes.ok) {
                 const recipeData = await recipeRes.json();
-                setRecipeAuthorId(recipeData.authorId);
+                console.log('Recipe data:', recipeData); // Debug log
+                setRecipeAuthorId(recipeData.authorId || recipeData.author?.id);
             }
         } catch (error) {
             console.error("Failed to fetch comments:", error);
