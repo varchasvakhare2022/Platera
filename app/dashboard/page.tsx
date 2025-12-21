@@ -274,11 +274,17 @@ export default function DashboardPage() {
                                         {data.savedRecipes.map((recipe) => (
                                             <Link href={`/explore/${recipe.id}`} key={recipe.id} className="group bg-stone-900/30 border border-stone-800/50 rounded-xl overflow-hidden hover:border-stone-700 transition-colors block">
                                                 <div className="relative aspect-[4/3] bg-stone-900 overflow-hidden">
-                                                    <img
-                                                        src={recipe.images[0]}
-                                                        alt={recipe.title}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    />
+                                                    {recipe.images && recipe.images.length > 0 ? (
+                                                        <img
+                                                            src={recipe.images[0]}
+                                                            alt={recipe.title}
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full bg-gradient-to-br from-stone-800 to-stone-900 flex items-center justify-center">
+                                                            <span className="text-stone-600 text-sm">No image</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="p-4">
                                                     <h3 className="text-white font-semibold mb-1 truncate">{recipe.title}</h3>
