@@ -17,23 +17,23 @@ const DUMMY_RECIPES: Recipe[] = [
     {
         id: 'dummy-1',
         title: 'Truffle Risotto',
-        image: 'https://images.unsplash.com/photo-1476124369491-c8fb2c6cb0f7?w=400&h=500&fit=crop',
+        image: 'https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?w=400&h=500&fit=crop&q=80',
         rating: 4.8,
-        chef: 'Chef Marco',
+        chef: 'Marco',
     },
     {
         id: 'dummy-2',
         title: 'Seared Duck Breast',
         image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=400&h=500&fit=crop',
         rating: 4.9,
-        chef: 'Chef Elena',
+        chef: 'Elena',
     },
     {
         id: 'dummy-3',
         title: 'Lobster Thermidor',
         image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=500&fit=crop',
         rating: 5.0,
-        chef: 'Chef Antoine',
+        chef: 'Antoine',
     },
 ];
 
@@ -128,7 +128,7 @@ export default function FeaturedRecipeCarousel({ recipes }: FeaturedRecipeCarous
 
                                         <div className="flex items-center gap-1.5">
                                             <div className="w-5 h-5 rounded-full bg-gradient-to-br from-brand-600 to-brand-700 flex items-center justify-center text-white text-xs font-semibold">
-                                                {recipe.chef.charAt(5)}
+                                                {recipe.chef.charAt(0)}
                                             </div>
                                             <span className="text-xs text-stone-400 font-medium">{recipe.chef}</span>
                                         </div>

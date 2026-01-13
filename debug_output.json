@@ -1,14 +1,14 @@
 {
   "currentUser": {
-    "id": "cmj9zvnlm0000x8x5apkkyf9u",
-    "email": "vk.varchasva@gmail.com",
-    "clerkId": "user_36qewqoHXLK7IHJyZvLLd0jpJtY"
+    "id": "cmjepftgh0000tgx5sb5nim8q",
+    "email": "rajaashish82988@gmail.com",
+    "clerkId": "user_36vu3lCFDKhKKdhLwMtnNQh7S0K"
   },
   "duplicates": [
     {
-      "id": "cmj9zvnlm0000x8x5apkkyf9u",
-      "recipes": 1,
-      "clerkId": "user_36qewqoHXLK7IHJyZvLLd0jpJtY"
+      "id": "cmjepftgh0000tgx5sb5nim8q",
+      "recipes": 0,
+      "clerkId": "user_36vu3lCFDKhKKdhLwMtnNQh7S0K"
     }
   ],
   "testRecipe": "NOT FOUND"
