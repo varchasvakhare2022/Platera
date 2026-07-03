@@ -8,6 +8,11 @@ import { Edit, Trash2, Plus, ArrowUpRight, Clock, Users, Star } from 'lucide-rea
 import Link from 'next/link';
 import { PageTransition } from '@/components/animations/PageTransition';
 
+export const metadata = {
+  title: "User Dashboard - Manage Your Experience Effortlessly",
+  description: "Access your personalized dashboard to manage settings, track progress, and enhance your experience with our platform seamlessly.",
+};
+
 // -- Interfaces --
 interface Recipe {
     id: string;
