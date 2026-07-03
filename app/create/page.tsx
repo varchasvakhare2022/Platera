@@ -19,7 +19,7 @@ import {
 import { getErrorMessage } from "@/types/errors";
 
 export const metadata = {
-  title: "",
+  title: "Add New Recipe",
   description: "",
 };
 
