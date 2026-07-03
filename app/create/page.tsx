@@ -18,6 +18,11 @@ import {
 } from "lucide-react";
 import { getErrorMessage } from "@/types/errors";
 
+export const metadata = {
+  title: "",
+  description: "",
+};
+
 export default function CreateRecipePage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
