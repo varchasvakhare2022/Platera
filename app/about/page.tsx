@@ -4,6 +4,11 @@ import { motion } from 'framer-motion';
 import { ChefHat, Users, Award } from 'lucide-react';
 import Link from 'next/link';
 
+export const metadata = {
+  title: "About Us - Discover Our Mission and Values",
+  description: "Learn about our mission, values, and the team that drives our success. Explore how we can help you achieve your goals today!",
+};
+
 export default function About() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-neutral-950 to-stone-950">
