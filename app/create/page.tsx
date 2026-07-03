@@ -19,8 +19,8 @@ import {
 import { getErrorMessage } from "@/types/errors";
 
 export const metadata = {
-  title: "Add New Recipe",
-  description: "here you can add any recipe of your choice",
+  title: "Create Engaging Content Easily with Our Tools",
+  description: "Discover how to create captivating content effortlessly. Explore our powerful tools and tips for effective content creation tailored for your needs.",
 };
 
 export default function CreateRecipePage() {
