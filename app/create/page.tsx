@@ -20,7 +20,7 @@ import { getErrorMessage } from "@/types/errors";
 
 export const metadata = {
   title: "Add New Recipe",
-  description: "",
+  description: "here you can add any recipe of your choice",
 };
 
 export default function CreateRecipePage() {
