@@ -15,6 +15,11 @@ import {
 } from "lucide-react";
 import { RecipeCard } from "@/components/recipes/RecipeCard";
 
+export const metadata = {
+  title: "Explore | Platera Recipes",
+  description: "",
+};
+
 interface Recipe {
   id: string;
   title: string;
